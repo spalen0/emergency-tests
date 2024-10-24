@@ -74,8 +74,11 @@ contract Base4626EmergencyWithdrawTest is Test {
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
         assertLt(strategy.balanceOfStake(), 10, "balanceOfStake not zero");
-        assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
         assertLt(strategy.valueOfVault(), 10, "vaule still in vault"); // allow some dust
+        uint256 strategyBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
+        assertGt(strategyBalance, balanceOfAsset, "strategy balance not increased");
+        // verify strategy has recovered all assets or maximum possible
+        assertGe(strategyBalance, Math.min(assets, maxWithdrawAmount), "strategy didn't recover all asset");
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
@@ -102,6 +105,12 @@ contract Base4626EmergencyWithdrawTest is Test {
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
         assertLt(strategy.balanceOfStake(), 10, "balanceOfStake not zero");
-        assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
+        uint256 strategyBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
+        assertGt(strategyBalance, balanceOfAsset, "strategy balance not increased");
+
+        // study strategy has some rounding error because of converting assets to shares
+        uint256 roundingError = 3;
+        // verify strategy has recovered all assets or maximum possible
+        assertGe(strategyBalance + roundingError, Math.min(assets, maxWithdrawAmount), "strategy didn't recover all asset");
     }
 }

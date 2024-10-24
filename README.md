@@ -12,7 +12,19 @@ To run all tests use:
 forge test
 ```
 
-## Strategies Failing
+## Strategies Tested
+
+- [Aave V3](./test/AaveEmergencyWithdrawTest.t.sol) on mainnet, arbitrum and polygon
+- [Spark](./test/AaveEmergencyWithdrawTest.t.sol) on mainnet
+- [Across](./test/AcrossEmergencyWithdrawTest.t.sol) on mainnet
+- [Gearbox](./test/Base4626EmergencyWithdrawTest.t.sol) on mainnet
+- [Sturdy](./test/Base4626EmergencyWithdrawTest.t.sol) on mainnet
+- [Compound V3](./test/CompoundEmergencyWithdrawTest.t.sol) on mainnet, arbitrum and polygon
+- [Maker & Sky](./test/MakerEmergencyWithdrawTest.t.sol) on mainnet
+- [Pendle](./test/PendleEmergencyWithdrawTest.t.sol) on mainnet and arbitrum
+- [Silo](./test/SiloEmergencyWithdrawTest.t.sol) on arbitrum
+
+### Strategies Failing
 
 Some of them are reverting on emergencyWithdraw(uint256.max):
 
